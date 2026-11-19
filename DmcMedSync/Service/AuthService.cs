@@ -15,7 +15,7 @@ namespace DmcMedSync.Service
             _config = config;
         }
 
-        private readonly List<User> _users = new()
+        private static readonly List<User> _users = new()
         {
             new User { Username = "admin", Password = "12345", Role = "Admin" },
             new User { Username = "schoolnurse", Password = "12345", Role = "SchoolNurse" }
@@ -75,7 +75,7 @@ namespace DmcMedSync.Service
                 new Claim(ClaimTypes.Role, user.Role),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
-            
+
             var token = new JwtSecurityToken(
                 issuer: jwtSettings["Issuer"],
                 audience: jwtSettings["Audience"],
@@ -86,7 +86,5 @@ namespace DmcMedSync.Service
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
-
-
     }
 }

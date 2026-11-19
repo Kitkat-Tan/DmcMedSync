@@ -1,5 +1,4 @@
 ﻿@page "/admin-dashboard"
-@rendermode InteractiveServer
 @using DmcMedSync.Models
 @using DmcMedSync.Service
 @using Microsoft.AspNetCore.Authorization
@@ -9,3 +8,224 @@
 @inject AuthenticationStateProvider AuthStateProvider
 @inject NavigationManager Navigation
 
+<PageTitle>Admin Home - DmcMedSync</PageTitle>
+
+<!-- Slide-Out Sidebar -->
+<div class="sidebar-wrapper">
+    @if (IsOpen)
+    {
+        <div class="sidebar-backdrop" @onclick="Close"></div>
+    }
+
+    <aside class="slide-sidebar @(IsOpen ? "open" : "")">
+        <div class="sidebar-header d-flex justify-content-between align-items-center p-3 border-bottom">
+            <h4 class="mb-0 fw-bold">DmcMedSync Menu</h4>
+            <button class="btn btn-sm btn-outline-secondary" @onclick="Close" aria-label="Close sidebar">&times;</button>
+        </div>
+
+        <div class="sidebar-content p-3">
+            <ul class="nav flex-column gap-2">
+                <li class="nav-item">
+                    <button class="btn btn-light text-start w-100 fw-semibold" @onclick='() => NavigateAndClose("/past-records")'>
+                        Past Record
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="btn btn-light text-start w-100 fw-semibold" @onclick='() => NavigateAndClose("/prints")'>
+                        Prints
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="btn btn-primary text-start w-100 fw-semibold" @onclick='() => NavigateAndClose("/create-student-record")'>
+                        + Create New Student Record
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="btn btn-warning text-start w-100 fw-semibold" @onclick='() => NavigateAndClose("/recent-complaint")'>
+                        Make a Recent Complaint
+                    </button>
+                </li>
+            </ul>
+
+            <hr class="my-4" />
+
+            <button class="btn btn-outline-danger w-100" @onclick="HandleLogout">
+                Logout
+            </button>
+        </div>
+    </aside>
+</div>
+
+<!-- Main Page Layout -->
+<div class="container-fluid py-4">
+    <!-- Top Header Bar -->
+    <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+        <div class="d-flex align-items-center gap-3">
+            <button class="btn btn-dark" @onclick="Open">
+                &#9776; Menu
+            </button>
+            <div>
+                <h3 class="mb-0 fw-bold">Clinic Records & Reports</h3>
+                <small class="text-muted">Welcome back, @AdminUsername</small>
+            </div>
+        </div>
+
+        <div class="d-flex gap-2">
+            <a href="/create-student-record" class="btn btn-primary">+ New Student Record</a>
+            <a href="/recent-complaint" class="btn btn-outline-warning text-dark">Log Complaint</a>
+        </div>
+    </div>
+
+    <!-- Split Workspace: Half Screen for Recent Saved Records Report -->
+    <div class="row g-4">
+        <!-- Left Half (col-lg-6): Report of Recent Saved Records -->
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
+                    <h5 class="mb-0 fw-bold text-primary">Recent Saved Records Report</h5>
+                    <span class="badge bg-primary-subtle text-primary">@RecentRecords.Count Saved</span>
+                </div>
+
+                <div class="card-body p-0">
+                    @if (RecentRecords.Count == 0)
+                    {
+                        <div class="p-4 text-center text-muted">
+                            No saved student records found yet.
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Student Name</th>
+                                        <th>Grade / Section</th>
+                                        <th>Complaint / Notes</th>
+                                        <th>Date Saved</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var record in RecentRecords)
+                                    {
+                                        <tr>
+                                            <td class="fw-semibold">@record.StudentName</td>
+                                            <td>@record.GradeSection</td>
+                                            <td>@record.Complaint</td>
+                                            <td class="text-muted small">@record.DateSaved.ToString("MMM dd, yyyy hh:mm tt")</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                </div>
+
+                <div class="card-footer bg-white d-flex justify-content-between align-items-center">
+                    <a href="/past-records" class="btn btn-sm btn-outline-secondary">View All Past Records</a>
+                    <a href="/prints" class="btn btn-sm btn-outline-primary">Print Report</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Half (col-lg-6): Quick Summary & Recent Complaints -->
+        <div class="col-lg-6">
+            <div class="row g-3 mb-4">
+                <div class="col-sm-6">
+                    <div class="card border-0 shadow-sm p-3">
+                        <span class="text-muted small text-uppercase">Total Saved Records</span>
+                        <h2 class="fw-bold text-primary mb-0 mt-1">@RecentRecords.Count</h2>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="card border-0 shadow-sm p-3">
+                        <span class="text-muted small text-uppercase">Pending Complaints</span>
+                        <h2 class="fw-bold text-warning mb-0 mt-1">@RecentRecords.Count(r => r.IsPending)</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white fw-bold py-3">
+                    Quick Actions
+                </div>
+                <div class="list-group list-group-flush">
+                    <a href="/create-student-record" class="list-group-item list-group-item-action py-3">
+                        <strong>Create New Student Record</strong>
+                        <div class="small text-muted">Register a new student profile and baseline health info.</div>
+                    </a>
+                    <a href="/recent-complaint" class="list-group-item list-group-item-action py-3">
+                        <strong>Make a Recent Complaint</strong>
+                        <div class="small text-muted">Log a student clinic visit, symptom, or treatment given.</div>
+                    </a>
+                    <a href="/past-records" class="list-group-item list-group-item-action py-3">
+                        <strong>Past Record</strong>
+                        <div class="small text-muted">Search and review archived student medical histories.</div>
+                    </a>
+                    <a href="/prints" class="list-group-item list-group-item-action py-3">
+                        <strong>Prints</strong>
+                        <div class="small text-muted">Generate printable clinic passes, medical certificates, and summaries.</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public bool IsOpen { get; set; } = true; // Starts open so the sidebar is immediately visible
+    [Parameter] public EventCallback<bool> IsOpenChanged { get; set; }
+
+    private string AdminUsername = "Admin";
+    private List<StudentRecordSummary> RecentRecords = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        if (authState.User.Identity?.IsAuthenticated == true)
+        {
+            AdminUsername = authState.User.Identity.Name ?? "Admin";
+        }
+
+        // Sample saved records (replace with your database/service call when ready)
+        RecentRecords = new List<StudentRecordSummary>
+        {
+            new("Juan Dela Cruz", "Grade 10 - Rizal", "Headache & Mild Fever", DateTime.Now.AddHours(-1), true),
+            new("Maria Santos", "Grade 8 - Bonifacio", "Sprained Ankle (PE Class)", DateTime.Now.AddHours(-3), false),
+            new("Carlos Reyes", "Grade 12 - STEM A", "Stomach Ache", DateTime.Now.AddDays(-1), false)
+        };
+    }
+
+    private async Task Open()
+    {
+        IsOpen = true;
+        await IsOpenChanged.InvokeAsync(IsOpen);
+    }
+
+    private async Task Close()
+    {
+        IsOpen = false;
+        await IsOpenChanged.InvokeAsync(IsOpen);
+    }
+
+    private async Task NavigateAndClose(string url)
+    {
+        await Close();
+        Navigation.NavigateTo(url);
+    }
+
+    private async Task HandleLogout()
+    {
+        var jwtProvider = (JwtAuthStateProvider)AuthStateProvider;
+        await jwtProvider.LogoutAsync();
+        Navigation.NavigateTo("/login");
+    }
+
+    public record StudentRecordSummary(
+        string StudentName,
+        string GradeSection,
+        string Complaint,
+        DateTime DateSaved,
+        bool IsPending
+    );
+}
