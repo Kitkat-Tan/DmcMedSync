@@ -1,0 +1,180 @@
+﻿/* ===== Palette ===== */
+.login-wrapper {
+    --green-900: #0b3d2e;
+    --green-700: #14804a;
+    --green-600: #1a9a5a;
+    --green-100: #e6f4ec;
+    --green-50: #f3faf6;
+    --text: #1f2d27;
+    --muted: #6b7c74;
+    --border: #cfe0d6;
+    --danger: #c0392b;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: radial-gradient(circle at 15% 20%, rgba(26, 154, 90, 0.18), transparent 45%), radial-gradient(circle at 85% 80%, rgba(20, 128, 74, 0.15), transparent 45%), linear-gradient(135deg, var(--green-50), #ffffff);
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    color: var(--text);
+}
+
+/* ===== Card ===== */
+.login-card {
+    width: 100%;
+    max-width: 420px;
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 40px 36px 36px;
+    border-top: 5px solid var(--green-700);
+    box-shadow: 0 20px 45px rgba(11, 61, 46, 0.12), 0 2px 6px rgba(11, 61, 46, 0.06);
+}
+
+/* ===== Header ===== */
+.brand-header {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+    .brand-header h2 {
+        margin: 0 0 6px;
+        font-size: 1.9rem;
+        font-weight: 700;
+        letter-spacing: 0.3px;
+        color: var(--green-900);
+    }
+
+    .brand-header p {
+        margin: 0;
+        font-size: 0.95rem;
+        color: var(--muted);
+    }
+
+/* ===== Form ===== */
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--green-900);
+}
+
+.login-card ::deep .input-box {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 14px;
+    font-size: 0.95rem;
+    color: var(--text);
+    background: var(--green-50);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+
+    .login-card ::deep .input-box::placeholder {
+        color: #9db0a6;
+    }
+
+    .login-card ::deep .input-box:focus {
+        background: #ffffff;
+        border-color: var(--green-600);
+        box-shadow: 0 0 0 4px rgba(26, 154, 90, 0.15);
+    }
+
+/* ===== Password field ===== */
+.password-wrapper {
+    position: relative;
+}
+
+    .password-wrapper ::deep .input-box {
+        padding-right: 70px;
+    }
+
+.toggle-btn {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    padding: 4px 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--green-700);
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+    .toggle-btn:hover {
+        background: var(--green-100);
+    }
+
+/* ===== Submit ===== */
+.btn-submit {
+    width: 100%;
+    margin-top: 8px;
+    padding: 13px;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    color: #ffffff;
+    background: linear-gradient(135deg, var(--green-600), var(--green-700));
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(20, 128, 74, 0.3);
+    transition: transform 0.15s, box-shadow 0.15s, filter 0.15s;
+}
+
+    .btn-submit:hover {
+        filter: brightness(1.05);
+        transform: translateY(-1px);
+        box-shadow: 0 8px 20px rgba(20, 128, 74, 0.38);
+    }
+
+    .btn-submit:active {
+        transform: translateY(0);
+    }
+
+/* ===== Validation ===== */
+.login-card ::deep .validation-message {
+    margin-top: 5px;
+    font-size: 0.8rem;
+    color: var(--danger);
+}
+
+.login-card ::deep .input-box.invalid {
+    border-color: var(--danger);
+}
+
+/* ===== Status banner ===== */
+.status-banner {
+    margin-top: 18px;
+    padding: 11px 14px;
+    font-size: 0.9rem;
+    text-align: center;
+    border-radius: 10px;
+}
+
+.status-success {
+    color: var(--green-900);
+    background: var(--green-100);
+    border: 1px solid #b7dfc8;
+}
+
+.status-error {
+    color: #8e2a1f;
+    background: #fdecea;
+    border: 1px solid #f3c2bb;
+}
+
+@media (max-width: 480px) {
+    .login-card {
+        padding: 30px 22px;
+    }
+}

@@ -1,0 +1,11 @@
+﻿@page "/admin-dashboard"
+@rendermode InteractiveServer
+@using DmcMedSync.Models
+@using DmcMedSync.Service
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@attribute [Authorize(Roles = "Admin")]
+@inject AuthService AuthService
+@inject AuthenticationStateProvider AuthStateProvider
+@inject NavigationManager Navigation
+
