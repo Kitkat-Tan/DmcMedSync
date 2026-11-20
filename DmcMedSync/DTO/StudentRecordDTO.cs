@@ -1,6 +1,7 @@
 ﻿namespace DmcMedSync.DTO
 {
     //DiagnosisHistory, ImmunizationHistory, MedicationHistory, AllergyHistory, LabResultHistory, VitalSignsHistory
+    //A dto for transferring student medical records data between layers of the application
     public class StudentRecordDTO
     {
         public int StudentId { get; set; }

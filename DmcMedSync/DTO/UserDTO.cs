@@ -1,5 +1,8 @@
 ﻿namespace DmcMedSync.DTO
 {
+
+
+    //User DTO for data Registration and Transfer
     public class UserDTO
     {
         
