@@ -4,7 +4,7 @@
     public class StudentRecordDTO
     {
         public int StudentId { get; set; }
-        public string FullName { get; set; } = string.Empty
+        public string FullName { get; set; } = string.Empty;
         public int Age { get; set; }
         public string Gender { get; set; } = string.Empty;
         public int GradeLevel { get; set; }
@@ -20,7 +20,7 @@
         //Guardian Contact
 
         public string GuardianName { get; set; } = string.Empty;
-        public int PhoneNumber { get;set }
-        public string HomeAddress { get; student }
+        public int PhoneNumber { get; set; }
+        public string HomeAddress { get; student; } = string.Empty;
     }
 }
