@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <Folder Include="Controller\" />
+    <Folder Include="Controller\" />
+    <Folder Include="Repositories\" />
   </ItemGroup>
 
   <ItemGroup>
