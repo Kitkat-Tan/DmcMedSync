@@ -4,8 +4,8 @@
 
     //creating list of existing student
     //for updating and deleting records of student medical history
-    public class ClinicRecordService
+    public class UpdateStudentRecord: CreateStudentDiagnosis
     {
-        public List<CreateDiagnosisDTO> DiagnosisHistory { get; set; } = new();
+       
     }
 }

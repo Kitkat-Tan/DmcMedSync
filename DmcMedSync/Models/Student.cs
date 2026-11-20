@@ -1,9 +1,10 @@
-﻿namespace DmcMedSync.DTO
+﻿namespace DmcMedSync.Models
 {
-    //DiagnosisHistory, ImmunizationHistory, MedicationHistory, AllergyHistory, LabResultHistory, VitalSignsHistory
-    //A dto for transferring student medical records data between layers of the application
-    public class StudentRecordDTO
+    public class Student
     {
+        //holds the student record and their information
+
+               public int Id { get; set; }
         public int StudentId { get; set; }
         public string FullName { get; set; } = string.Empty;
         public int Age { get; set; }
@@ -15,8 +16,6 @@
 
         public string MedicalHistory { get; set; } = string.Empty;
 
-        
-        
 
         //Guardian Contact
 
